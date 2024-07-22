@@ -1,0 +1,27 @@
+[
+    {
+        "name": "ann",
+        "purchase": 15.99,
+        "id": 1
+    },
+    {
+        "name": "bob",
+        "purchase": 22.99,
+        "id": 2
+    },
+    {
+        "name": "tom",
+        "purchase": 67.99,
+        "id": 3
+    },
+    {
+        "name": "gio",
+        "purchase": 56.89,
+        "id": 4
+    },
+    {
+        "name": "nika",
+        "purchase": 42.99,
+        "id": 5
+    }
+]
