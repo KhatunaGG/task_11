@@ -15,7 +15,7 @@ const logMiddleware = async (req, res, next) => {
         }
 
         const currentUser = users.find(el => el.name.toLowerCase() === name.toLowerCase());
-
+   
         if (currentUser) {
             return next();
         } else {

@@ -14,6 +14,7 @@ const addProduct = async (req, res) => {
     try {
         const data = await readData('data.json', true)
         const { title, price, category } = req.body
+        if (!title || !price) return res.status(400).json('name and price are required')
         const lastId = data[data.length - 1]?.id || 0
         const newproduct = {
             id: lastId + 1,
@@ -31,13 +32,13 @@ const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params
         const data = await readData('data.json', true)
-
+        console.log(id)
         const index = data.findIndex(el => Number(el.id) === Number(id))
         if (index === -1) return res.json({ success: false, message: "Can't delete this item" })
         const deletedProduct = data.splice(index, 1)
+        console.log(deleteProduct)
         await writeData('data.json', data)
         console.log({ successes: true, message: { 'deleted product': deletedProduct } })
-        console.log(deletedProduct)
         res.json(data)
     } catch (error) {
         console.log(error)

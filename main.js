@@ -4,7 +4,6 @@ const fs = require('fs/promises')
 const apiRouter = require('./api')
 const consoleMiddleware = require('./middlewares/console.middleware')
 const { writeData, readData } = require('./utils')
-
 const path = require('path')
 
 
@@ -15,6 +14,7 @@ const path = require('path')
 
 
 app.use(express.json())
+app.set('view engine', 'ejs')
 app.use(consoleMiddleware)
 
 
@@ -25,17 +25,20 @@ app.get('/', (req, res) => {
 app.use('/api', apiRouter)
 
 
-app.get('/shopping/clients', async (rq, res) => {
+
+// ააწყეთ დინამიური ფეიჯი რომლეიც აიდით წამოიღებს ხარჯების ობიექტს
+// ააწყეთ view გვერდი სადაც დარენდერდება ყველა დამატებული ხარჯი
+
+// app.use('/shopping', shoppingRouter)
+
+
+app.get('/shopping/clients', async (req, res) => {
     const data = await readData('shop.json', true)
     res.json(data)
 })
 
 
-// ააწყეთ დინამიური ფეიჯი რომლეიც აიდით წამოიღებს ხარჯების ობიექტს
-// ააწყეთ view გვერდი სადაც დარენდერდება ყველა დამატებული ხარჯი
-
-
-app.post('/shopping/clients', async (req, res) => {
+app.post('shopping/clients', async (req, res) => {
     try {
         const { name, purchase } = req.body
         if (!name) return res.status(400).json({ success: false, message: 'name is required' })
@@ -44,31 +47,26 @@ app.post('/shopping/clients', async (req, res) => {
         const lastId = data[data.length - 1]?.id || 1
         const newClient = { name, purchase, id: lastId + 1 }
         data.push(newClient)
-
-        console.log(lastId, 'lastid')
-        console.log(newClient, 'newclient')
-
         await writeData('shop.json', data)
         res.status(200).json(data)
-
     } catch (error) {
         console.log(error)
     }
 })
 
-app.get('/shopping/client/:id', async (req, res) => {
+
+app.get('/shopping/clients/:id', async (req, res) => {
     try {
         const data = await readData('shop.json', true)
         const { id } = req.params
         const client = data.find(el => el.id === Number(id))
         if (!client) return res.status(400).json('Client ot found')
         res.render(path.join(__dirname, 'views', 'pages', 'expense.ejs'), { client })
-
     } catch (error) {
         console.log(error)
     }
-
 })
+
 
 
 
