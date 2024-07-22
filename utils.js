@@ -1,5 +1,3 @@
-
-const { readFile } = require('fs')
 const fs = require('fs/promises')
 
 const readData = async (filepath, isParsed = false) => {

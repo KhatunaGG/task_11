@@ -1,6 +1,5 @@
 const { Router } = require('express')
 const productsRouter = Router()
-const { readData, writeData } = require('../../utils');
 const { getAllProducts, addProduct, deleteProduct, updateProduct } = require('./product.service');
 
 
